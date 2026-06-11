@@ -17,14 +17,9 @@ Setup and usage
 ### Prerequisites
 
 #### macOS
-Install [terminal-notifier.app][terminal-notifier] (default*)
+Install [Alerter][alerter]:
 
-_When using `tmux` on Yosemite:_
-
-`reattach-to-user-namespace` is required to prevent `terminal-notifier` from hanging
-(see [julienXX/terminal-notifier#115][issue115] for details).
-
-
+    brew install vjeantet/tap/alerter
 
 #### Linux/Other
 
@@ -135,11 +130,10 @@ sourcing `notify.plugin.zsh`.
 
         zstyle ':notify:*' check-focus no
 
-[terminal-notifier]: https://github.com/alloy/terminal-notifier 
+[alerter]: https://github.com/vjeantet/alerter
 [libnotify]: https://github.com/GNOME/libnotify
 [iterm2]: http://www.iterm2.com/
 [dogefy.sh]: https://gist.github.com/marzocchi/14c47a49643389029a2026b4d4fec7ae
-[issue115]: https://github.com/julienXX/terminal-notifier/issues/115
 
 ## Installation with package managers
 

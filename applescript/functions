@@ -48,10 +48,11 @@ function is-terminal-active() {
 }
 
 function zsh-notify() {
-    local message title time_elapsed type app_id app_id_option sound_option
+    local message title time_elapsed type app_id notification_sound icon plugin_dir
+    local -a alerter_options
 
-    if ! command -v terminal-notifier > /dev/null 2>&1; then
-        echo cannot find terminal-notifier in \$PATH 1>&2
+    if ! command -v alerter > /dev/null 2>&1; then
+        echo cannot find alerter in \$PATH 1>&2
         return 1
     fi
 
@@ -75,23 +76,23 @@ function zsh-notify() {
     if [[ "$TERM_PROGRAM" == 'iTerm.app' ]] || [[ -n "$ITERM_SESSION_ID" ]]; then
         app_id="com.googlecode.iterm2"
     elif [[ "$TERM_PROGRAM" == 'Apple_Terminal' ]] || [[ -n "$TERM_SESSION_ID" ]]; then
-        app_id="com.apple.terminal"
+        app_id="com.apple.Terminal"
     fi
 
     if [[ -n "$app_id" ]]; then
-        app_id_option="-activate $app_id"
+        alerter_options+=(--sender "$app_id")
     fi
 
     if [[ -n "$notification_sound" ]]; then
-        sound_option="-sound $notification_sound"
+        alerter_options+=(--sound "$notification_sound")
     fi
 
     if [[ -n "$icon" ]]; then
-        icon_option="-contentImage $icon"
+        alerter_options+=(--content-image "$icon")
     fi
 
-    terminal-notifier ${=app_id_option} ${=sound_option} ${=icon_option} \
-        -title "${title}" <<< "$message" > /dev/null 2>&1 &!
+    alerter "${alerter_options[@]}" --title "$title" \
+        <<< "$message" > /dev/null 2>&1 &!
 
     if zstyle -t ':notify:' activate-terminal; then
         osascript <<< "tell app id \"$app_id\" to activate" 1>/dev/null

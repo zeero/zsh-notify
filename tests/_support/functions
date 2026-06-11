@@ -25,7 +25,7 @@ function get-args {
     echo "$v"
 }
 
-function terminal-notifier {
+function alerter {
     cat > "$stdin_file"
     echo "$@" > "$args_file"
 }

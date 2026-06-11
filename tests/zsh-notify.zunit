@@ -9,18 +9,18 @@
 @teardown {
 }
 
-@test 'zsh-notify - terminal-notifier in Apple Terminal' {
+@test 'zsh-notify - alerter in Apple Terminal' {
   if [[ "$TERM_PROGRAM" != "Apple_Terminal" ]]; then
     skip 'must be run in Apple Terminal'
   fi
 
   run zsh-notify success 3  <<<"notification text"
   assert $state equals 0
-  assert "$(get-args)" same_as "-activate com.apple.terminal -title #win (in 3s)"
+  assert "$(get-args)" same_as "--sender com.apple.Terminal --title #win (in 3s)"
   assert "$(get-stdin)" same_as "notification text"
 }
 
-@test 'zsh-notify - terminal-notifier in Apple Terminal with icon' {
+@test 'zsh-notify - alerter in Apple Terminal with icon' {
   if [[ "$TERM_PROGRAM" != "Apple_Terminal" ]]; then
     skip 'must be run in Apple Terminal'
   fi
@@ -29,12 +29,25 @@
 
   run zsh-notify success 3  <<<"notification text"
   assert $state equals 0
-  assert "$(get-args)" same_as "-activate com.apple.terminal -contentImage custom.gif -title #win (in 3s)"
+  assert "$(get-args)" same_as "--sender com.apple.Terminal --content-image custom.gif --title #win (in 3s)"
+  assert "$(get-stdin)" same_as "notification text"
+}
+
+@test 'zsh-notify - alerter in Apple Terminal with sound' {
+  if [[ "$TERM_PROGRAM" != "Apple_Terminal" ]]; then
+    skip 'must be run in Apple Terminal'
+  fi
+
+  zstyle ':notify:*' success-sound Glass
+
+  run zsh-notify success 3  <<<"notification text"
+  assert $state equals 0
+  assert "$(get-args)" same_as "--sender com.apple.Terminal --sound Glass --title #win (in 3s)"
   assert "$(get-stdin)" same_as "notification text"
 }
 
 
-@test 'zsh-notify - terminal-notifier in iTerm2' {
+@test 'zsh-notify - alerter in iTerm2' {
   if [[ "$TERM_PROGRAM" != "iTerm.app" ]] && [[ -z "$ITERM_SESSION_ID" ]]; then
     skip 'must be run in iTerm2'
   fi
@@ -44,14 +57,14 @@
 
   run get-args
   assert $state equals 0
-  assert "$output" same_as "-activate com.googlecode.iterm2 -title #win (in 3s)"
+  assert "$output" same_as "--sender com.googlecode.iterm2 --title #win (in 3s)"
 
   run get-stdin
   assert $state equals 0
   assert "$output" same_as "notification text"
 }
 
-@test 'zsh-notify - terminal-notifier in iTerm2 with icon' {
+@test 'zsh-notify - alerter in iTerm2 with icon' {
   if [[ "$TERM_PROGRAM" != "iTerm.app" ]] && [[ -z "$ITERM_SESSION_ID" ]]; then
     skip 'must be run in iTerm2'
   fi
@@ -63,7 +76,7 @@
 
   run get-args
   assert $state equals 0
-  assert "$output" same_as "-activate com.googlecode.iterm2 -contentImage custom.gif -title #win (in 3s)"
+  assert "$output" same_as "--sender com.googlecode.iterm2 --content-image custom.gif --title #win (in 3s)"
 
   run get-stdin
   assert $state equals 0
