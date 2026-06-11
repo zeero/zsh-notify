@@ -91,7 +91,9 @@ function zsh-notify() {
         alerter_options+=(--content-image "$icon")
     fi
 
-    alerter "${alerter_options[@]}" --title "$title" \
+    alerter "${alerter_options[@]}" \
+        --timeout 5 \
+        --title "$title" \
         --message "$message" > /dev/null 2>&1 &!
 
     if zstyle -t ':notify:' activate-terminal; then
