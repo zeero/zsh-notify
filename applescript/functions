@@ -79,9 +79,9 @@ function zsh-notify() {
         app_id="com.apple.Terminal"
     fi
 
-    if [[ -n "$app_id" ]]; then
-        alerter_options+=(--sender "$app_id")
-    fi
+    # if [[ -n "$app_id" ]]; then
+    #     alerter_options+=(--sender "$app_id")
+    # fi
 
     if [[ -n "$notification_sound" ]]; then
         alerter_options+=(--sound "$notification_sound")
