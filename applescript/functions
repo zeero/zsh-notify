@@ -92,7 +92,7 @@ function zsh-notify() {
     fi
 
     alerter "${alerter_options[@]}" --title "$title" \
-        <<< "$message" > /dev/null 2>&1 &!
+        --message "$message" > /dev/null 2>&1 &!
 
     if zstyle -t ':notify:' activate-terminal; then
         osascript <<< "tell app id \"$app_id\" to activate" 1>/dev/null
